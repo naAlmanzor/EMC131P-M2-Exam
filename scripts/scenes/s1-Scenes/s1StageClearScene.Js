@@ -25,7 +25,18 @@ export default class s1StageClearScene extends Phaser.Scene{
         restartTxt.setInteractive({useHandCursor: true});
         restartTxt.on('pointerdown', () => this.restart());
 
-        let titleTxt = this.add.text(300, 300, `TITLE SCREEN`, {
+        let nextStageTxt = this.add.text(300, 300, `NEXT STAGE`, {
+            fontFamily:'Montserrat',
+            fontSize: '30px',
+            fontStyle: '600',
+            fill: '#ffffff'
+          });
+        
+        nextStageTxt.setScrollFactor(0);
+        nextStageTxt.setInteractive({useHandCursor: true});
+        nextStageTxt.on('pointerdown', () => this.nextStage());
+
+        let titleTxt = this.add.text(300, 350, `TITLE SCREEN`, {
             fontFamily:'Montserrat',
             fontSize: '30px',
             fontStyle: '600',
@@ -41,6 +52,10 @@ export default class s1StageClearScene extends Phaser.Scene{
 
     restart(){
         this.scene.start("s1GameScene");
+    }
+
+    nextStage(){
+        this.scene.start("s2GameScene")
     }
 
     home(){

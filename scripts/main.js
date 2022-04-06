@@ -48,5 +48,4 @@ game.scene.add('s2GameOverScene', s2gameOverScene);
 game.scene.add('s2StageClearScene', s2stageClearScene);
 
 // Starting Scene
-game.scene.start('s2GameScene');
-// game.scene.start('s2GameScene');
+game.scene.start('TitleScene');

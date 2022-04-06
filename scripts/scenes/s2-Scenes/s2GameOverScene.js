@@ -25,7 +25,18 @@ export default class s2GameOverScene extends Phaser.Scene{
         restartTxt.setInteractive({useHandCursor: true});
         restartTxt.on('pointerdown', () => this.restart());
 
-        let titleTxt = this.add.text(300, 300, `TITLE SCREEN`, {
+        let firstStageTxt = this.add.text(300, 300, `GO BACK TO STAGE 1`, {
+            fontFamily:'Montserrat',
+            fontSize: '30px',
+            fontStyle: '600',
+            fill: '#ffffff'
+          });
+        
+        firstStageTxt.setScrollFactor(0);
+        firstStageTxt.setInteractive({useHandCursor: true});
+        firstStageTxt.on('pointerdown', () => this.firstStage());
+
+        let titleTxt = this.add.text(300, 350, `TITLE SCREEN`, {
             fontFamily:'Montserrat',
             fontSize: '30px',
             fontStyle: '600',
@@ -37,11 +48,14 @@ export default class s2GameOverScene extends Phaser.Scene{
         titleTxt.on('pointerdown', () => this.home());
 
         this.cameras.main.setBackgroundColor('#000000')
-        
     }
 
     restart(){
         this.scene.start("s2GameScene");
+    }
+
+    firstStage(){
+        this.scene.start("s1GameScene")
     }
 
     home(){
