@@ -1,6 +1,6 @@
 export default class s1GameScene extends Phaser.Scene {
     constructor(){
-        super('s1GameScene')
+        super('s2GameScene')
     }
 
     init(){
@@ -17,8 +17,8 @@ export default class s1GameScene extends Phaser.Scene {
 
     preload(){
         this.load.image('tiles', './assets/maps/sheet.png');
-        this.load.tilemapTiledJSON('tilemap1', './assets/maps/s1Map.tmj');
-        
+        this.load.tilemapTiledJSON('tilemap2', './assets/maps/s2Map.tmj');
+            
         this.load.image('heart', './assets/icons/heart.png');
 
         this.load.image('coin', './assets/images/coin.png');
@@ -27,64 +27,25 @@ export default class s1GameScene extends Phaser.Scene {
         this.load.spritesheet('dude', './assets/images/dude.png', {frameWidth: 32, frameHeight: 48});
     }
 
-    
     create(){
-    
-        // Map
-        this.map = this.make.tilemap({key: 'tilemap1'});
+
+        // Map  
+        this.map = this.make.tilemap({key: 'tilemap2'});
         this.tileset = this.map.addTilesetImage('tiles_packed', 'tiles');
         this.platform = this.map.createLayer('platform', this.tileset, 0, 60);
         this.flag = this.map.createLayer('flag', this.tileset, 0, 60);
         this.water = this.map.createLayer('water', this.tileset, 0, 60);
-    
-        this.map.createLayer('backdrops-extra', this.tileset, 0, 60)
+
         this.map.createLayer('backdrops', this.tileset, 0, 60)
-        this.map.createLayer('extra details', this.tileset, 0, 60)
-    
+        this.map.createLayer('extra-backdrops', this.tileset, 0, 60)
+
         this.flag.setCollisionByExclusion(-1, true);
         this.platform.setCollisionByExclusion(-1, true);
         this.water.setCollisionByExclusion(-1, true);
-    
-        // Coins
-        this.CoinLayer = this.map.getObjectLayer('coins')['objects'];
-        
-        this.coins = this.physics.add.staticGroup()
-        this.CoinLayer.forEach(object => {
-            let obj = this.coins.create(object.x, object.y, "coin"); 
-            obj.setScale(object.width/18, object.height/18); 
-            obj.setOrigin(0.5, 0.5); 
-            obj.body.width = object.width; 
-            obj.body.height = object.height;
-        })
-    
-        // Enemies
-        this.enemyGround = this.map.getObjectLayer('ground enemies')['objects'];
-    
-        this.gEnemies = this.physics.add.group();
-        this.enemyGround.forEach(object => {
-            let obj = this.gEnemies.create(object.x, object.y, "ground-enemies");
-            obj.setScale(object.width/16, object.height/16); 
-            obj.setOrigin(0);
-            obj.setImmovable([true]); 
-            obj.body.width = object.width; 
-            obj.body.height = object.height;
-        })
-        
-        // Push Mobs
-        this.pushMobs = this.map.getObjectLayer('push mobs')['objects'];
-        
-        this.pMobs = this.physics.add.group();
-        this.pushMobs.forEach(object => {
-            let obj = this.pMobs.create(object.x, object.y, "push-mobs");
-            obj.setScale(object.width/16, object.height/16); 
-            obj.setOrigin(0); 
-            obj.body.width = object.width; 
-            obj.body.height = object.height;
-        })
-    
+
         // Player
         this.player = this.physics.add.sprite(200, 350, 'dude');
-    
+
         this.player.setCollideWorldBounds(false);
     
         this.anims.create({
@@ -109,10 +70,47 @@ export default class s1GameScene extends Phaser.Scene {
 
         this.player.invulnerable = false;
 
-        //Hearts
+        // Ground Enemies
+        this.enemyGround = this.map.getObjectLayer('ground enemies')['objects'];
+    
+        this.gEnemies = this.physics.add.group();
+        this.enemyGround.forEach(object => {
+            let obj = this.gEnemies.create(object.x, object.y, "ground-enemies");
+            obj.setScale(object.width/16, object.height/16); 
+            obj.setOrigin(0);
+            obj.setImmovable([true]); 
+            obj.body.width = object.width; 
+            obj.body.height = object.height;
+        });
+
+        // Push Mobs
+        this.pushMobs = this.map.getObjectLayer('push mobs')['objects'];
+        
+        this.pMobs = this.physics.add.group();
+        this.pushMobs.forEach(object => {
+            let obj = this.pMobs.create(object.x, object.y, "push-mobs");
+            obj.setScale(object.width/16, object.height/16); 
+            obj.setOrigin(0); 
+            obj.body.width = object.width; 
+            obj.body.height = object.height;
+        });
+
+        // Hearts
         this.heart1 = this.add.sprite(30, 50, 'heart').setScrollFactor(0);
         this.heart2 = this.add.sprite(60, 50, 'heart').setScrollFactor(0);
         this.heart3 = this.add.sprite(90, 50, 'heart').setScrollFactor(0);
+
+        // Coins
+        this.CoinLayer = this.map.getObjectLayer('coins')['objects'];
+        
+        this.coins = this.physics.add.staticGroup()
+        this.CoinLayer.forEach(object => {
+            let obj = this.coins.create(object.x, object.y, "coin"); 
+            obj.setScale(object.width/18, object.height/18); 
+            obj.setOrigin(0.5, 0.5); 
+            obj.body.width = object.width; 
+            obj.body.height = object.height;
+        })
 
         // Texts
         this.coinText = this.add.text(180, 10, `Coins: ${this.coinsScore}x`, {
@@ -126,12 +124,12 @@ export default class s1GameScene extends Phaser.Scene {
             fill: '#000000'
         });
         this.scoreText.setScrollFactor(0);
-    
+
         // Physics and Camera
         this.physics.add.collider(this.player, this.platform);
         this.physics.add.collider(this.player, this.pMobs);
-        this.physics.add.collider(this.pMobs, this.platform);
         this.physics.add.collider(this.gEnemies, this.platform);
+        this.physics.add.collider(this.pMobs, this.platform);
 
         this.physics.add.overlap(this.player, this.coins, this.collectCoins, null, this);
         this.physics.add.collider(this.player, this.pMobs, this.upMob, null, this);
@@ -140,10 +138,10 @@ export default class s1GameScene extends Phaser.Scene {
         // Lose Conditions - If player collides with red enemies/water
         this.physics.add.collider(this.player, this.water, this.gameOver, null, this);
         this.physics.add.collider(this.player, this.gEnemies, this.hitEnemy, null, this);
-        
+
         // Win Conditions - If player collides with the flag at the end of the map
         this.physics.add.collider(this.player, this.flag, this.clear, null, this);
-    
+
         this.cameras.main
         .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
         .startFollow(this.player);
@@ -172,7 +170,7 @@ export default class s1GameScene extends Phaser.Scene {
             this.player.setVelocityY(-380);
         }
     }
-    
+
     collectCoins(player, coins){
         coins.destroy(coins.x, coins.y)
         this.coinsScore ++;
@@ -186,7 +184,7 @@ export default class s1GameScene extends Phaser.Scene {
             this.coinCounter = 0;
         }
 
-        if(this.coinsScore==21){
+        if(this.coinsScore==47){
             this.score+=1000
             this.scoreText.setText(`Score: ${this.score}`);
         }
@@ -258,7 +256,7 @@ export default class s1GameScene extends Phaser.Scene {
         this.player.clearTint()
         this.player.invulnerable = false;
     }
-    
+
     hitMob (pMobs, gEnemies){
         
         pMobs.setVelocityX(100)
@@ -284,13 +282,11 @@ export default class s1GameScene extends Phaser.Scene {
         player.setVelocityY(-400)
     }
 
-    // Win-Lose Fucntions
-    clear(){
-        this.scene.start("s1StageClearScene")
-    }
-
     gameOver(){
-        this.scene.start("s1GameOverScene")
+        this.scene.start("s2GameOverScene")
     }
 
+    clear(){
+        this.scene.start("s2StageClearScene")
+    }
 }
