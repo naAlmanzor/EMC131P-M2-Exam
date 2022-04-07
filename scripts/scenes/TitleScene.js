@@ -4,7 +4,13 @@ export default class TitleScene extends Phaser.Scene{
         super("TitleScene")
     }
 
+    preload(){
+        this.load.image('bg', './assets/images/title-bg.png')
+    }
+
     create(){
+
+        this.add.image(400, 280,'bg');
 
         let playText = this.add.text(220, 160, `PLAY GAME`, {
             fontFamily:'Montserrat',

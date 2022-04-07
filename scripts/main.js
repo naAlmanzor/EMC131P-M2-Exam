@@ -10,6 +10,7 @@ import s2GameScene from './scenes/s2-Scenes/s2GameScenes.js'
 import s2GameOverScene from './scenes/s2-scenes/s2GameOverScene.js'
 import s2StageClearScene from './scenes/s2-Scenes/s2StageClearScene.js'
 
+//Load Scenes
 let titleScene = new TitleScene();
 let instructionScene = new InstructionScene();
 let selectScene = new SelectScene();
@@ -52,4 +53,3 @@ game.scene.add('s2StageClearScene', s2stageClearScene);
 
 // Starting Scene
 game.scene.start('TitleScene');
-// game.scene.start('s2GameScene');

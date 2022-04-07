@@ -13,6 +13,9 @@ export default class s1GameScene extends Phaser.Scene {
         this.score = 0;
         this.pMobs;
         this.gEnemies;
+        this.boomCounter = 1;
+        this.scale = 1;
+        this.bEnemies;
     }
 
     preload(){
@@ -24,6 +27,7 @@ export default class s1GameScene extends Phaser.Scene {
         this.load.image('coin', './assets/images/coin.png');
         this.load.image('push-mobs', './assets/images/push-mobs.png');
         this.load.image('ground-enemies', './assets/images/ground-enemies.png');
+        this.load.image('bounce-enemies', './assets/images/bounce-enemies.png');
         this.load.spritesheet('dude', './assets/images/dude.png', {frameWidth: 32, frameHeight: 48});
     }
 
@@ -83,6 +87,20 @@ export default class s1GameScene extends Phaser.Scene {
             obj.body.height = object.height;
         });
 
+        // Bounce Enemies
+        this.enemyBounce = this.map.getObjectLayer('bounce enemies')['objects'];
+        
+        this.bEnemies = this.physics.add.group();
+        this.enemyBounce.forEach(object => {
+            let obj = this.bEnemies.create(object.x, object.y, "bounce-enemies");
+            obj.setScale(object.width/16, object.height/16); 
+            obj.setOrigin(0); 
+            obj.setBounce(1);
+            obj.setImmovable([true]); 
+            obj.body.width = object.width; 
+            obj.body.height = object.height;
+        });
+
         // Push Mobs
         this.pushMobs = this.map.getObjectLayer('push mobs')['objects'];
         
@@ -129,6 +147,7 @@ export default class s1GameScene extends Phaser.Scene {
         this.physics.add.collider(this.player, this.platform);
         this.physics.add.collider(this.player, this.pMobs);
         this.physics.add.collider(this.gEnemies, this.platform);
+        this.physics.add.collider(this.bEnemies, this.water);
         this.physics.add.collider(this.pMobs, this.platform);
 
         this.physics.add.overlap(this.player, this.coins, this.collectCoins, null, this);
@@ -138,6 +157,7 @@ export default class s1GameScene extends Phaser.Scene {
         // Lose Conditions - If player collides with red enemies/water
         this.physics.add.collider(this.player, this.water, this.gameOver, null, this);
         this.physics.add.collider(this.player, this.gEnemies, this.hitEnemy, null, this);
+        this.physics.add.collider(this.player, this.bEnemies, this.hitEnemyBounce, null, this);
 
         // Win Conditions - If player collides with the flag at the end of the map
         this.physics.add.collider(this.player, this.flag, this.clear, null, this);
@@ -184,7 +204,7 @@ export default class s1GameScene extends Phaser.Scene {
             this.coinCounter = 0;
         }
 
-        if(this.coinsScore==47){
+        if(this.coinsScore==48){
             this.score+=1000
             this.scoreText.setText(`Score: ${this.score}`);
         }
@@ -255,6 +275,36 @@ export default class s1GameScene extends Phaser.Scene {
     removeIFrame(){
         this.player.clearTint()
         this.player.invulnerable = false;
+    }
+
+    // For Bouncing Enemies
+    hitEnemyBounce(player, bEnemies){
+
+        player.setVelocityY(-450)
+
+        if(this.boomCounter != 3 && bEnemies.body.touching.up){
+            this.scale+=0.5
+            bEnemies.setScale(this.scale);
+            this.boomCounter++;
+        }
+
+        else if (this.boomCounter == 3){
+            this.tweens.add({
+                targets: bEnemies,
+                alpha: 0.3,
+                scaleX: 1.5,
+                scaleY: 1.5,
+                ease: 'Linear',
+                duration: 200,
+                onComplete: function() {
+                    bEnemies.destroy(bEnemies.x, bEnemies.y);
+                },
+            });
+
+            this.score+=150
+            this.scoreText.setText(`Score: ${this.score}`);
+            this.boomCounter = 0;
+        }
     }
 
     hitMob (pMobs, gEnemies){
