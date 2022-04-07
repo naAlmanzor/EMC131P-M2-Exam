@@ -57,11 +57,11 @@ export default class SelectScene extends Phaser.Scene{
     }
 
     stage1(){
-        this.scene.start('s1GameScene')
+        this.scene.start('s1LoadScene')
     }
 
     stage2(){
-        this.scene.start('s2GameScene')
+        this.scene.start('s2LoadScene')
     }
 
     close(){

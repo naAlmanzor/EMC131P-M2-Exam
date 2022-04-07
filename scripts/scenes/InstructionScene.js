@@ -115,7 +115,7 @@ export default class InstructionScene extends Phaser.Scene{
     }
 
     play(){
-        this.scene.start("s1GameScene")
+        this.scene.start("s1LoadScene")
     }
 
 }
