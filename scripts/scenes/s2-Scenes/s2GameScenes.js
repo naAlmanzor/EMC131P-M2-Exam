@@ -267,7 +267,7 @@ export default class s1GameScene extends Phaser.Scene {
             this.time.delayedCall(1000, this.removeIFrame, [], this);
     
             if(this.lives==0){
-            this.scene.start("GameOverScene")
+            this.scene.start("s2GameOverScene")
             }
         }
     }
