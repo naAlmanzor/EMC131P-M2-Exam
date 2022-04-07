@@ -1,5 +1,6 @@
 import TitleScene from './scenes/TitleScene.js';
 import InstructionScene from './scenes/InstructionScene.js';
+import SelectScene from './scenes/SelectScene.js';
 
 import s1GameScene from './scenes/s1-Scenes/s1GameScene.js'
 import s1GameOverScene from './scenes/s1-Scenes/s1GameOverScene.js'
@@ -11,6 +12,7 @@ import s2StageClearScene from './scenes/s2-Scenes/s2StageClearScene.js'
 
 let titleScene = new TitleScene();
 let instructionScene = new InstructionScene();
+let selectScene = new SelectScene();
 
 let s1gameScene = new s1GameScene();
 let s1gameOverScene = new s1GameOverScene();
@@ -29,7 +31,7 @@ let config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 1000 },
-            debug: true
+            debug: false
         }
     },  
 };
@@ -38,6 +40,7 @@ let game = new Phaser.Game(config);
 
 game.scene.add('TitleScene', titleScene);
 game.scene.add('InstructionScene', instructionScene);
+game.scene.add('SelectScene', selectScene);
 
 game.scene.add('s1GameScene', s1gameScene);
 game.scene.add('s1GameOverScene', s1gameOverScene);
@@ -49,3 +52,4 @@ game.scene.add('s2StageClearScene', s2stageClearScene);
 
 // Starting Scene
 game.scene.start('TitleScene');
+// game.scene.start('s2GameScene');

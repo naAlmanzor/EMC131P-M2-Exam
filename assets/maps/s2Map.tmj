@@ -839,18 +839,41 @@
                  "width":18,
                  "x":1854,
                  "y":342
-                }, 
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":11,
+         "name":"bounce enemies",
+         "objects":[
                 {
-                 "gid":171,
+                 "gid":180,
                  "height":18,
-                 "id":128,
+                 "id":129,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":18,
-                 "x":774,
-                 "y":234
+                 "x":709.666666666667,
+                 "y":270.333333333333
+                }, 
+                {
+                 "gid":180,
+                 "height":18,
+                 "id":130,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":18,
+                 "x":1764,
+                 "y":342
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -858,8 +881,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":10,
- "nextobjectid":129,
+ "nextlayerid":12,
+ "nextobjectid":131,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.8.4",
